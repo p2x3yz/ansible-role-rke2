@@ -3,38 +3,47 @@
 rke2_type: server
 
 # Deploy the control plane in HA mode
-rke2_ha_mode: false
+rke2_ha_mode: true
 
 # Install and configure Keepalived on Server nodes
 # Can be disabled if you are using pre-configured Load Balancer
+#rke2_ha_mode_keepalived: true
 rke2_ha_mode_keepalived: true
 
 # Install and configure kube-vip LB and VIP for cluster
 # rke2_ha_mode_keepalived needs to be false
+#rke2_ha_mode_kubevip: false
 rke2_ha_mode_kubevip: false
 
 # Kubernetes API and RKE2 registration IP address. The default Address is the IPv4 of the Server/Master node.
 # In HA mode choose a static IP which will be set as VIP in keepalived.
 # Or if the keepalived is disabled, use IP address of your LB.
 #rke2_api_ip: "{{ hostvars[groups[rke2_servers_group_name].0]['ansible_default_ipv4']['address'] }}"
-rke2_api_ip: "10.6.0."
+#rke2_api_ip: "10.6.0.53"
+rke2_api_ip: "169.254.0.80"
+#rke2_api_ip: "169.254.0.83"
+#rke2_api_ip: "10.6.0.59"
 
 # optional option for RKE2 Server to listen on a private IP address on port 9345
-# rke2_api_private_ip:
+rke2_api_private_ip: 169.254.0.80
+#rke2_api_private_ip: 169.254.0.8
 
 # optional option for kubevip IP subnet
-# rke2_api_cidr: 24
+#rke2_api_cidr: 24
 
 # optional option for kubevip
-# rke2_interface: eth0
+rke2_interface: eth0
 
 # kubevip load balancer IP range
-rke2_loadbalancer_ip_range: {}
+rke2_loadbalancer_ip_range: {
+  #range-global: 169.254.0.80-169.254.0.82
+  range-global: 169.254.0.80-169.254.0.85
+}
 #  range-global: 192.168.1.50-192.168.1.100
 #  cidr-finance: 192.168.0.220/29,192.168.0.230/29
 
 # Install kubevip cloud provider if rke2_ha_mode_kubevip is true
-rke2_kubevip_cloud_provider_enable: true
+rke2_kubevip_cloud_provider_enable: false
 
 # Enable kube-vip to watch Services of type LoadBalancer
 rke2_kubevip_svc_enable: true
@@ -56,7 +65,7 @@ rke2_agent_node_taints: []
 rke2_token: chimmy_chiimyCHANGu#
 
 # RKE2 version
-rke2_version: v1.25.3+rke2r1
+rke2_version: v1.29.0+rke2r1
 
 # URL to RKE2 repository
 rke2_channel_url: https://update.rke2.io/v1-release/channels
@@ -82,6 +91,7 @@ rke2_artifact:
 
 # Changes the deploy strategy to install based on local artifacts
 rke2_airgap_mode: false
+
 
 # Airgap implementation type - download, copy or exists
 # - 'download' will fetch the artifacts on each node,
@@ -173,6 +183,7 @@ rke2_cni: canal
 
 # Validate system configuration against the selected benchmark
 # (Supported value is "cis-1.23" or eventually "cis-1.6" if you are running RKE2 prior 1.25)
+#rke2_cis_profile: "cis-1.23"
 rke2_cis_profile: ""
 
 # Download Kubernetes config file to the Ansible controller
@@ -186,12 +197,15 @@ rke2_download_kubeconf_path: /tmp
 
 # Default Ansible Inventory Group name for RKE2 cluster
 rke2_cluster_group_name: k8s_cluster
+#rke2_cluster_group_name: k8s_cluster2
 
 # Default Ansible Inventory Group name for RKE2 Servers
 rke2_servers_group_name: masters
+#rke2_servers_group_name: masters2
 
 # Default Ansible Inventory Group name for RKE2 Agents
 rke2_agents_group_name: workers
+#rke2_agents_group_name: workers2
 
 # (Optional) A list of Kubernetes API server flags
 # All flags can be found here https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver

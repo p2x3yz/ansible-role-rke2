@@ -1,18 +1,18 @@
 - name: Deploy RKE2
-  hosts: k8s_cluster
+  hosts: k8s_cluster2
   become: yes
   vars:
     rke2_airgap_mode: false
     rke2_airgap_implementation: download
     rke2_cni:
-      #- multus
-      - calico
+      - multus
+      - canal
     rke2_artifact:
       - sha256sum-{{ rke2_architecture }}.txt
       - rke2.linux-{{ rke2_architecture }}.tar.gz
       - rke2-images.linux-{{ rke2_architecture }}.tar.zst
     rke2_airgap_copy_additional_tarballs:
-      #- rke2-images-multus.linux-{{ rke2_architecture }}
-      - rke2-images-calico.linux-{{ rke2_architecture }}
+      - rke2-images-multus.linux-{{ rke2_architecture }}
+      - rke2-images-canal.linux-{{ rke2_architecture }}
   roles:
      - role: "{{ playbook_dir }}"

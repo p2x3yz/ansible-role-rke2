@@ -20,7 +20,7 @@
     path: "{{ rke2_artifact_path }}"
     state: directory
     mode: 0700
-  when: rke2_airgap_mode
+  #when: rke2_airgap_mode
 
 - name: Download RKE2 checksum and artifacts
   when: rke2_airgap_mode and rke2_airgap_implementation == 'download'
